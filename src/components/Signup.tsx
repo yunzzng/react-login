@@ -1,5 +1,7 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import SignupForm from "./SignupForm";
+import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../consts/api";
 
 interface UserSignupForm {
     email: string;
@@ -17,34 +19,36 @@ const Signup = () => {
     });
 
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const navigate = useNavigate();
 
     const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUserSignupForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const checkedEmail = async (email: string) => {
-        try {
-            const response = await fetch(`https://elice-express-api.vercel.app/api/users/check-email?email=${email}`);
-            const result = await response.json();
-            return result.isAvailable; 
-        } catch (err) {
-            console.error("이메일 중복 확인 오류:", err);
-            return false;
-        }
-    };
+    // const checkedEmail = async (email: string) => {
+    //     try {
+    //         const response = await fetch(`https://elice-express-api.vercel.app/api/users/check-email?email=${email}`);
+    //         const result = await response.json();
+    //         return result.isAvailable; 
+    //     } catch (err) {
+    //         console.error("이메일 중복 확인 오류:", err);
+    //         return false;
+    //     }
+    // };
 
     const handleClickSignup = async () => {
         // 이메일 중복 확인 먼저 수행
-        const emailAvailable = await checkedEmail(userSignupForm.email);
-        if (!emailAvailable) {
-            alert("이미 사용 중인 이메일입니다.");
-            return;
-        }
+        // const emailAvailable = await checkedEmail(userSignupForm.email);
+        // if (!emailAvailable) {
+        //     alert("이미 사용 중인 이메일입니다.");
+        //     return;
+        // }
 
         // 이메일 중복 확인을 통과한 경우에만 회원가입 요청
         try {
-            const signupResult = await fetch("https://elice-express-api.vercel.app/api/users/", {
+            // const signupResult = await fetch(`https://elice-express-api.vercel.app/api/users/`, {
+            const signupResult = await fetch(`${API_BASE_URL}/api/users/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -58,6 +62,7 @@ const Signup = () => {
                 const signupAlert = await signupResult.json();
                 if (signupAlert.isError === false) {
                     alert("회원가입 성공");
+                    navigate("/signin");
                 } else {
                     alert("회원가입 실패");
                 }

@@ -1,7 +1,9 @@
-import { ChangeEvent, FormEvent, useState} from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import LoginForm from "./LoginForm";
+import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../consts/api";
 
-interface UserLoginForm{
+interface UserLoginForm {
     email: string;
     password: string;
 };
@@ -16,6 +18,14 @@ const Login = () => {
         email: "",
         password: "",
     });
+
+    const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // 이메일과 비밀번호가 모두 입력된 경우에만 버튼 활성화
+        setIsButtonEnabled(UserLoginForm.email !== "" && UserLoginForm.password !== "");
+    }, [UserLoginForm]);
 
     // useEffect(() => {
     //     refValue.current = 2;
@@ -39,7 +49,8 @@ const Login = () => {
 
     const handleClickLogin = async () => {
         try {
-            const loginResult = await fetch("https://elice-express-api.vercel.app/api/users/signin", {
+            // const loginResult = await fetch("https://elice-express-api.vercel.app/api/users/signin", {
+            const loginResult = await fetch(`${API_BASE_URL}/api/users/signin`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -50,8 +61,12 @@ const Login = () => {
     
             if (loginResult.ok) {
                 const loginAlert = await loginResult.json();
+                console.log(loginAlert);
                 if (loginAlert.isError === false) {
                     alert("로그인 성공");
+                    navigate("/"); 
+                    // 1) 로그인 후, 응답값으로 오는 token 값을 localStorage에 elice-app-token 이라는 key로 저장
+                    localStorage.setItem("elice-app-token", loginAlert.token);
                 } else {
                     alert("로그인 실패");
                 }
@@ -75,7 +90,11 @@ const Login = () => {
         // 로그인 결과 값에
         // isError === false -> alert("로그인 성공") 
         // isError === true -> alert("로그인 실패")
-        handleClickLogin();
+        if (isButtonEnabled) {
+            handleClickLogin();
+        } else {
+            alert("이메일과 비밀번호를 모두 입력해 주세요.");
+        }
     };
 
     // const handleClickButton = () => {
@@ -84,7 +103,7 @@ const Login = () => {
 
     return (
         <>
-            <LoginForm onChangeInput={onChangeInput} onSubmit={onSubmit} />
+            <LoginForm onChangeInput={onChangeInput} onSubmit={onSubmit} isButtonEnabled={isButtonEnabled} />
             {/* <button ref={buttonRef} onClick={handleClickButton}>Ref-Button</button> */}
         </>
     );

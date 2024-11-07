@@ -1,40 +1,31 @@
-import { ChangeEventHandler, FC, MouseEventHandler, useState } from "react"
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
+import useAuth from "../hooks/useAuth";
 
-interface LayoutProps{
-    title: string;
-    desc: string;
-};
+const Layout = () => {
+    // 현재 사용자의 경로를 알아내는 방법 /signin / profile
+    const location = useLocation();
+    console.log(location.pathname);
+    
+    const navigate = useNavigate();
+    // 사용자 접근제어
 
-const Layout: FC<LayoutProps> = (props) => {
-    const {title, desc} = props;
-    const [state, setState] = useState("default-word");
-
-    const handleClickButton: MouseEventHandler = (e) => {
-        console.log(e);
-        setState("changed-word");
-    };
-
-    // const handleClickButton1 = (e: MouseEvent): void => {
-    //     setState("changed-word");
-    // };
-
-    const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
-        const value = e.target.value;
-        console.log(value);
-    };
-    // const handleChangeInput1 = (e: ChangeEvent<HTMLInputElement>) => {
-    //     const value = e.target.value;
-    //     console.log(value);
-    // };
+    useAuth();
+    
     return (
         <>
-            <button onClick={handleClickButton}>change word</button>
-            <input onChange={handleChangeInput} />
-            <h2>{title}</h2>
-            <div>{desc}</div>
-            {state}
+        <Header>
+            <button onClick={()=> navigate("/")}>홈</button>
+            <button onClick={()=> navigate("/domestic")}>국내숙소</button>
+            <button onClick={()=> navigate("/signin")}>로그인</button>
+            <button onClick={()=> navigate("/signup")}>회원가입</button>
+            <button onClick={()=> navigate("/profile")}>프로필</button>
+        </Header>
+        <Outlet />
+        <Footer></Footer>
         </>
-    );
-};
+    )
+}
 
 export default Layout;
