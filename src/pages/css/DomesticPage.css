@@ -1,0 +1,36 @@
+.hotel-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+}
+
+.hotel-item {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.hotel-item:hover {
+    transform: scale(1.05);
+}
+
+.hotel-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.hotel-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.hotel-price {
+    color: #555;
+}

@@ -10,10 +10,12 @@ import SignupPage from './pages/SignupPage.tsx'
 import ProfilePage from './pages/ProfilePage.tsx'
 import DomesticPage from './pages/DomesticPage.tsx'
 import DomesticDetailPasge from './pages/DomesticDetailPage.tsx'
+import ErrorPage from './pages/ErrorPage.tsx'
 
 const router = createBrowserRouter([{
   path: "/",
   element: <Layout />,
+  errorElement: <ErrorPage />,
   children:[
     {path: "/", element: <HomePage />},
     {path: "/signin", element: <SigninPage />},
@@ -21,8 +23,11 @@ const router = createBrowserRouter([{
     {path: "/profile", element: <ProfilePage />},
     {path: "/domestic", element: <DomesticPage/>},
     {path: "/domestic/:id", element: <DomesticDetailPasge />}
-  ]}
-])
+  ]},
+  {
+    path: "*", element: <h2>404 Not Found Page</h2>,
+  },
+]);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
