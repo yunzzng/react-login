@@ -4,6 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 const PRIVATE_PATHS = ["/profile"];
 const useAuth = () => {
     const location = useLocation();
+    // url/#1 <section id={"1"} />
+    // const {pathname, state, hash, search} = location;    
+
     const navigate = useNavigate();
 
     useEffect(() => {

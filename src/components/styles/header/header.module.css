@@ -1,0 +1,33 @@
+.header_wrapper {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.header_nav {
+    display: flex;
+    gap: 15px; 
+    margin-left: auto; 
+}
+
+button {
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    padding: 5px 15px; 
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    color: #007bff;
+}
+
